@@ -1,15 +1,21 @@
+#=======IMPORTAÇÃO======#
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy import Column, Integer, String, Text, DateTime, Enum, ForeignKey, DECIMAL, Float
 from datetime import datetime
 import enum
 
-engine = create_engine("mysql+pymysql://root:@127.0.0.1:6363/taaskflow_db", echo=False)
+#=======CONEXÃO======#
+
+engine = create_engine("mysql+pymysql://root:@127.0.0.1:6363/pagamentos", echo=False)
 Base = declarative_base()
 conn = engine.connect()
 
 print("Conectou!")
 SessionLocal = sessionmaker(bind=engine)
+
+#=======ENUM======#
 
 class StatusPagamento(enum.Enum):
      PENDENTE = 'PENDENTE'
@@ -29,27 +35,41 @@ class Pagamento(Base):
 
     cliente = relationship("", back_populates="pagamentos")
 
-def inserir_pagamento ():
+#=======FUNÇÕES======#
+#=======INSERIR======#
+
+def inserir_pagamento():
     session = SessionLocal()
     
-    id_cliente = int(input("ID do cliente: "))
-    valor = Float(input("Valor: "))
-    
-    novo = Pagamento(
-        id_cliente=id_cliente,
-        valor=valor,
-        status=StatusPagamento.PENDENTE
-    )
-    
-    session.add(novo)
-    session.commit()
-    session.close()
-    print("Pagamento Registrado")
+    try:
+        id_cliente = int(input("ID do cliente: "))
+        valor = Float(input("Valor: "))   # corrigido
+        
+        novo = Pagamento(
+            id_cliente=id_cliente,
+            valor=valor,
+            status=StatusPagamento.PENDENTE
+        )
+        
+        session.add(novo)
+        session.commit()
+        print("Pagamento Registrado!")
+        return True  
+
+    except Exception as e:
+        session.rollback()
+        print("Pagamento não foi registrado.")
+        return False  
+
+    finally:
+        session.close()
+
+#=======ATUALIZAR======#
 
 def atualizar_pagamento():
     session = SessionLocal()
     
-    id_pag = int(input("ID do pagamento"))
+    id_pag = int(input("ID do pagamento: "))
     novo_status = input("Novo status(PENDETE,PAGO,ATRASADO,CANCELADO): ")
     
     pag = session.query(Pagamento).filter_by(id_pag=id_pag).first()
@@ -61,6 +81,8 @@ def atualizar_pagamento():
     else:
         print("Pagamento não encontrado.")
     session.close()
+
+#=======LISTAR======#
     
 def listar_pagamentos():
     session = SessionLocal()
@@ -70,20 +92,26 @@ def listar_pagamentos():
         print(p.id, p.valor, p.status)
 
     session.close()    
+ 
+#=======MENU======# 
     
 def menu():
     while True:
-        print("\n=== MENU PAGAMENTO ===")
-        print("1 - Atualizar pagamento")
-        print("2 - Listar pagamentos")
+        print("\n===MENU PAGAMENTO===")
+        print("1 - Inserir pagamento")
+        print("2 - Atualizar pagamento")
+        print("3 - Listar pagamentos")
         print("0 - Sair")
 
         op = input("Escolha: ")
 
         if op == "1":
+            inserir_pagamento()
+        
+        elif op == "2":
             atualizar_pagamento()
 
-        elif op == "2":
+        elif op == "3":
             listar_pagamentos()
                  
         elif op == "0":
