@@ -1,0 +1,8 @@
+CREATE DATABASE pagamentos;
+USE pagamentos;
+CREATE TABLE pagamentos(
+	id_pagamentos INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    vaor DECIMAL(10,2),
+    data_pagamento DATETIME DEFAULT NOW(),
+    status_pagamento VARCHAR(45) NOT NULL
+);
