@@ -1,0 +1,15 @@
+class Mecanico(Base):
+    __tablename__ = 'mecanico'
+
+    id: Mapped[int] = mapped_column(primary_key=True, unique=True, autoincrement=True)
+    nome: Mapped[str] = mapped_column(String(100), nullable=False)
+    especialidade: Mapped[str] = mapped_column(String(100), nullable=False)
+    
+    def adicionar_mecanico(self, session, nome, especialidade):
+        novo_mecanico = Mecanico(nome=nome, especialidade=especialidade)
+        session.add(novo_mecanico)
+        session.commit()
+        return novo_mecanico
+    
+    def listar_mecanicos(self, session):
+        return session.query(Mecanico).all()
