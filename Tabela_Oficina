@@ -1,0 +1,7 @@
+Create table Oficina(
+CNPJ varchar(14) NOT NULL PRIMARY KEY,
+id_mecanico int,
+endereco VARCHAR(100) NOT NULL,
+nome varchar(100) not null,
+FOREIGN KEY (id_mecanico) REFERENCES mecanico(id)
+);
