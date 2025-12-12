@@ -1,0 +1,6 @@
+create TABLE sistema_da_mecanica(
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     nome VARCHAR(100) NOT NULL,
+     especialidade VARCHAR(100) NOT NULL,
+),
+    
