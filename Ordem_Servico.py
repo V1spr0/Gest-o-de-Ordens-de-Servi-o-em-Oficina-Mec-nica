@@ -43,9 +43,7 @@ def menu():
         print("\n=== MENU ===")
         print("1 - Criar")
         print("2 - Listar ")
-        print("3 - Atualizar")
-        print("4 - Excluir")
-
+        
         op = input("Escolha: ")
 
         if op == "1":
@@ -59,5 +57,6 @@ def menu():
 
         else:
             print("Opção inválida!")
+
 
 menu()
