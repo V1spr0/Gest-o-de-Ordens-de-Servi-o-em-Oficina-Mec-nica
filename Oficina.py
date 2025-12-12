@@ -9,11 +9,11 @@ class Oficina(Base):
 
     id_mecanico: Mapped["Mecanico"] = relationship(back_populates="oficinas")
 
-    def adicionar_oficina(self, session, cnpj, nome, endereco):
-        nova_oficina = Oficina(CNPJ=cnpj, id_mecanico=self.id, nome=nome, endereco=endereco)
-        session.add(nova_oficina)
-        session.commit()
-        return nova_oficina
+ def adicionar_oficina(self, session, cnpj, nome, endereco):
+     nova_oficina = Oficina(CNPJ=cnpj, id_mecanico=self.id, nome=nome, endereco=endereco)
+     session.add(nova_oficina)
+     session.commit()
+     return nova_oficina
 
-    def listar_oficinas(self, session):
-        return session.query(Oficina).all()
+def listar_oficinas(self, session):
+    return session.query(Oficina).all()
